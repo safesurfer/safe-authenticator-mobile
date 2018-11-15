@@ -14,10 +14,25 @@ namespace SafeAuthenticator.ViewModels {
     private (double, double, string) LocationStrength;
     private (double, double, string) PasswordStrength;
 
-    public string AcctPassword { get => _acctPassword; set => SetProperty(ref _acctPassword, value); }
+    public string AcctPassword { get => _acctPassword; set
+            {
+                SetProperty(ref _acctPassword, value);
+                ((Command)CreateAcctCommand).ChangeCanExecute();
+            }
+        }
 
-    public string AcctSecret { get => _acctSecret; set => SetProperty(ref _acctSecret, value); }
-    public string Invitation { get => _invitation; set => SetProperty(ref _invitation, value); }
+    public string AcctSecret { get => _acctSecret; set {
+                SetProperty(ref _acctSecret, value);
+                ((Command)CreateAcctCommand).ChangeCanExecute();
+            }
+        }
+
+    public string Invitation { get => _invitation; set
+            {
+                SetProperty(ref _invitation, value);
+                ((Command)CreateAcctCommand).ChangeCanExecute();
+            }
+       }
 
     public ICommand CreateAcctCommand { get; }
 
@@ -43,14 +58,19 @@ namespace SafeAuthenticator.ViewModels {
 
       IsUiEnabled = Authenticator.IsLogInitialised;
 
-      CreateAcctCommand = new Command(OnCreateAcct);
+      CreateAcctCommand = new Command(OnCreateAcct, CanExecute);
 
       AcctSecret = string.Empty;
       AcctPassword = string.Empty;
       Invitation = string.Empty;
     }
 
-    private async void OnCreateAcct() {
+    private bool CanExecute()
+    {
+        return !string.IsNullOrWhiteSpace(AcctPassword) && !string.IsNullOrWhiteSpace(AcctSecret) && !string.IsNullOrWhiteSpace(Invitation);
+    }
+
+      private async void OnCreateAcct() {
       try {
         using (UserDialogs.Instance.Loading("Loading")){
           await Task.Run(() =>
