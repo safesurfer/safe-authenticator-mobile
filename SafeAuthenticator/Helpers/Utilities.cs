@@ -1,9 +1,11 @@
 ﻿using Hexasoft.Zxcvbn;
 using SafeAuthenticator.Models;
+using SafeAuthenticator.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Xamarin.Essentials;
 
 namespace SafeAuthenticator.Helpers {
   internal static class Utilities {
@@ -30,6 +32,28 @@ namespace SafeAuthenticator.Helpers {
       else if (calc >= AppConstants.AccStrengthSomeWhatSecure) Strength = "SECURE";
       double percentage = Math.Round(Math.Min((calc / 16) * 100, 100));
       return (calc, percentage, Strength);
+    }
+
+    internal static string GetErrorMessage(FfiException error)
+    {
+      switch (error.ErrorCode)
+      {
+        case -2000:
+        var current = Connectivity.NetworkAccess;
+        return current != NetworkAccess.Internet? "No internet connection" : "Could not connect to the SAFE Network";
+        case -101:            
+        return "Account does not exist";
+        case -3:            
+        return "Incorrect password";
+        case -102:            
+        return "Account already exists";
+        case -116:            
+        return "Invalid invitation";
+        case -117:
+        return "Invitation already claimed";
+        default:
+        return error.Message;
+      }            
     }
         #region Encoding Extensions
 
