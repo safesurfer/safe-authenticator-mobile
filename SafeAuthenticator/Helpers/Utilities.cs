@@ -35,15 +35,15 @@ namespace SafeAuthenticator.Helpers
             var calc = Math.Log(result.Guesses) / Math.Log(10);
             if (calc < AppConstants.AccStrengthVeryWeak)
                 strength = "VERY_WEAK";
-            else if (calc < AppConstants.AccStrengthWeak)
+            else if (calc < AppConstants.AccStrengthWeak )
                 strength = "WEAK";
             else if (calc < AppConstants.AccStrengthSomeWhatSecure)
                 strength = "SOMEWHAT_SECURE";
             else if (calc >= AppConstants.AccStrengthSomeWhatSecure)
                 strength = "SECURE";
-            double percentage = Math.Round(Math.Min((calc / 16) * 100, 100));
+            double percentage = Math.Round(Math.Min( (calc/16)*100,100 ) );
             return (calc, percentage, strength);
-        }
+       }
 
         internal static string GetErrorMessage(FfiException error)
     {
@@ -51,7 +51,7 @@ namespace SafeAuthenticator.Helpers
       {
         case -2000:
         var current = Connectivity.NetworkAccess;
-        return current != NetworkAccess.Internet ? "No internet connection" : "Could not connect to the SAFE Network";
+        return current != NetworkAccess.Internet ? "No internet connection" : "Could not connect to the SAFE Network"
         case -101:
         return "Account does not exist";
         case -3:
