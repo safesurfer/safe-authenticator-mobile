@@ -51,7 +51,7 @@ namespace SafeAuthenticator.Helpers
       {
         case -2000:
         var current = Connectivity.NetworkAccess;
-        return current != NetworkAccess.Internet ? "No internet connection" : "Could not connect to the SAFE Network"
+        return current != NetworkAccess.Internet ? "No internet connection" : "Could not connect to the SAFE Network";
         case -101:
         return "Account does not exist";
         case -3:
