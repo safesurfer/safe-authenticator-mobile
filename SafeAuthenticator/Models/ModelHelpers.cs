@@ -24,7 +24,7 @@ namespace SafeAuthenticator.Models
         public string ContainerName
         {
             get => _containerName.StartsWith("apps/") ? "App Container" : _containerName;
-            set => _containerName = value;
+            set => _containerName = value
         }
 
         [PublicAPI]
